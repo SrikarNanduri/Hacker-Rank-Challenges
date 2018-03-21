@@ -1,38 +1,50 @@
 import java.util.*;
-
-class Printer <T> {
-
-
-    public <E> void printArray(E[] generic) {
-
-        for (E element : generic) {
-            System.out.println(element);
-        }
+import java.io.*;
+class Node{
+    Node left,right;
+    int data;
+    Node(int data){
+        this.data=data;
+        left=right=null;
     }
 }
-
-public class Solution {
-
-    public static void main(String args[]) {
-        Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt();
-        Integer[] intArray = new Integer[n];
-        for (int i = 0; i < n; i++) {
-            intArray[i] = scanner.nextInt();
+class Solution{
+		public static int getHeight(Node root){
+       if(root == null) {
+           return -1;
+       }
+       
+       int left = 1 + getHeight(root.left);
+       int right = 1 + getHeight(root.right);
+        
+       return Math.max(left, right);
+    }
+	   public static Node insert(Node root,int data){
+        if(root==null){
+            return new Node(data);
         }
-
-        n = scanner.nextInt();
-        String[] stringArray = new String[n];
-        for (int i = 0; i < n; i++) {
-            stringArray[i] = scanner.next();
+        else{
+            Node cur;
+            if(data<=root.data){
+                cur=insert(root.left,data);
+                root.left=cur;
+            }
+            else{
+                cur=insert(root.right,data);
+                root.right=cur;
+            }
+            return root;
         }
-
-        Printer<Integer> intPrinter = new Printer<Integer>();
-        Printer<String> stringPrinter = new Printer<String>();
-        intPrinter.printArray(intArray);
-        stringPrinter.printArray(stringArray);
-        if (Printer.class.getDeclaredMethods().length > 1) {
-            System.out.println("The Printer class should only have 1 method named printArray.");
+    }
+	 public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int T=sc.nextInt();
+        Node root=null;
+        while(T-->0){
+            int data=sc.nextInt();
+            root=insert(root,data);
         }
+        int height=getHeight(root);
+        System.out.println(height);
     }
 }
